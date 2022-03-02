@@ -1,0 +1,495 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "Untitled0.ipynb",
+      "provenance": [],
+      "collapsed_sections": []
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "code",
+      "execution_count": 49,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "OQnNXOW1FTqs",
+        "outputId": "0559df82-faf9-4c86-d353-9b4282e9819b"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Requirement already satisfied: pyspark in /usr/local/lib/python3.7/dist-packages (3.2.1)\n",
+            "Requirement already satisfied: py4j==0.10.9.3 in /usr/local/lib/python3.7/dist-packages (from pyspark) (0.10.9.3)\n"
+          ]
+        }
+      ],
+      "source": [
+        "!pip install pyspark"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import pyspark"
+      ],
+      "metadata": {
+        "id": "576rVa7fFxSq"
+      },
+      "execution_count": 50,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from pyspark.sql import SparkSession"
+      ],
+      "metadata": {
+        "id": "vVD5dFRYFzUl"
+      },
+      "execution_count": 51,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "spark = SparkSession.builder.appName('test1').getOrCreate()\n",
+        "sc=spark.sparkContext"
+      ],
+      "metadata": {
+        "id": "ajCELm56F3Om"
+      },
+      "execution_count": 52,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "Names = ['Behzad','Behrooz','Arash','Helia','Negar',\n",
+        "         'Keyvan','Hesam','Shahrooz','Koorosh','Leila',\n",
+        "         'Nahid','Mahsa','Faranak','Arvin','Arsham',\n",
+        "         'Edvin','Elham','Matin','Ava','Romina',\n",
+        "         'Sadra','Armita','Anita','Hormoz','Armin',\n",
+        "         'Sam','Azita','Elisa','Aria','Peyman',\n",
+        "         'Ahmad','Kimia','Aslan','Zohre','Eli',\n",
+        "         'Emad','Kasra','Kamran','Parviz','Parisa',\n",
+        "         'Amir','Ashkan','Nima','Sajad','Saman',\n",
+        "         'Narges','Shahrzad','shahin','Sattar','Maryam']"
+      ],
+      "metadata": {
+        "id": "-_xZfvXvF6MP"
+      },
+      "execution_count": 53,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "rdd = sc.parallelize(Names)"
+      ],
+      "metadata": {
+        "id": "XCbDU-pkF-Bp"
+      },
+      "execution_count": 54,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "rdd.filter(lambda  Names:(Names)).collect()[19]"
+      ],
+      "metadata": {
+        "id": "iLydTzUqk06c",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 36
+        },
+        "outputId": "9f41984c-734d-46ce-f46a-231d4597d787"
+      },
+      "execution_count": 55,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "application/vnd.google.colaboratory.intrinsic+json": {
+              "type": "string"
+            },
+            "text/plain": [
+              "'Romina'"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 55
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "x = rdd.map(lambda Names: Names.upper())"
+      ],
+      "metadata": {
+        "id": "sSEo3AeV_aro"
+      },
+      "execution_count": 56,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "x.collect()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "sQ7VdmGtBgoY",
+        "outputId": "730eb122-b6c6-4381-c5cd-4d96f824d468"
+      },
+      "execution_count": 57,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "['BEHZAD',\n",
+              " 'BEHROOZ',\n",
+              " 'ARASH',\n",
+              " 'HELIA',\n",
+              " 'NEGAR',\n",
+              " 'KEYVAN',\n",
+              " 'HESAM',\n",
+              " 'SHAHROOZ',\n",
+              " 'KOOROSH',\n",
+              " 'LEILA',\n",
+              " 'NAHID',\n",
+              " 'MAHSA',\n",
+              " 'FARANAK',\n",
+              " 'ARVIN',\n",
+              " 'ARSHAM',\n",
+              " 'EDVIN',\n",
+              " 'ELHAM',\n",
+              " 'MATIN',\n",
+              " 'AVA',\n",
+              " 'ROMINA',\n",
+              " 'SADRA',\n",
+              " 'ARMITA',\n",
+              " 'ANITA',\n",
+              " 'HORMOZ',\n",
+              " 'ARMIN',\n",
+              " 'SAM',\n",
+              " 'AZITA',\n",
+              " 'ELISA',\n",
+              " 'ARIA',\n",
+              " 'PEYMAN',\n",
+              " 'AHMAD',\n",
+              " 'KIMIA',\n",
+              " 'ASLAN',\n",
+              " 'ZOHRE',\n",
+              " 'ELI',\n",
+              " 'EMAD',\n",
+              " 'KASRA',\n",
+              " 'KAMRAN',\n",
+              " 'PARVIZ',\n",
+              " 'PARISA',\n",
+              " 'AMIR',\n",
+              " 'ASHKAN',\n",
+              " 'NIMA',\n",
+              " 'SAJAD',\n",
+              " 'SAMAN',\n",
+              " 'NARGES',\n",
+              " 'SHAHRZAD',\n",
+              " 'SHAHIN',\n",
+              " 'SATTAR',\n",
+              " 'MARYAM']"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 57
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        ""
+      ],
+      "metadata": {
+        "id": "HK91ClSz-EdU"
+      },
+      "execution_count": 61,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "SortedNames = rdd.groupBy(lambda Names:Names[0]).map(lambda Names:([0],list(Names[1])))\n",
+        "SortedNames.collect()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "ahF0OvpeOoGZ",
+        "outputId": "d0586e3c-49cf-48d5-fef2-db3f7fb7a15c"
+      },
+      "execution_count": 62,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "[([0], ['Negar', 'Nahid', 'Nima', 'Narges']),\n",
+              " ([0], ['Keyvan', 'Koorosh', 'Kimia', 'Kasra', 'Kamran']),\n",
+              " ([0], ['Shahrooz', 'Sadra', 'Sam', 'Sajad', 'Saman', 'Shahrzad', 'Sattar']),\n",
+              " ([0], ['Leila']),\n",
+              " ([0], ['Romina']),\n",
+              " ([0], ['shahin']),\n",
+              " ([0], ['Behzad', 'Behrooz']),\n",
+              " ([0],\n",
+              "  ['Arash',\n",
+              "   'Arvin',\n",
+              "   'Arsham',\n",
+              "   'Ava',\n",
+              "   'Armita',\n",
+              "   'Anita',\n",
+              "   'Armin',\n",
+              "   'Azita',\n",
+              "   'Aria',\n",
+              "   'Ahmad',\n",
+              "   'Aslan',\n",
+              "   'Amir',\n",
+              "   'Ashkan']),\n",
+              " ([0], ['Helia', 'Hesam', 'Hormoz']),\n",
+              " ([0], ['Mahsa', 'Matin', 'Maryam']),\n",
+              " ([0], ['Faranak']),\n",
+              " ([0], ['Edvin', 'Elham', 'Elisa', 'Eli', 'Emad']),\n",
+              " ([0], ['Peyman', 'Parviz', 'Parisa']),\n",
+              " ([0], ['Zohre'])]"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 62
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from google.colab import drive\n",
+        "drive.mount('/content/drive')"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "reQUBypHR28o",
+        "outputId": "e83c4541-9672-478f-c66e-fc36c5d88e40"
+      },
+      "execution_count": 90,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Drive already mounted at /content/drive; to attempt to forcibly remount, call drive.mount(\"/content/drive\", force_remount=True).\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import string\n",
+        "\n",
+        "file_content = open('/content/drive/My Drive/MyFile.txt', \"r\", encoding='utf-8-sig').read()\n",
+        "\n",
+        "new_text = file_content.translate(str.maketrans('','',string.punctuation))\n",
+        "\n",
+        "tokens = new_text.split()\n",
+        "\n",
+        "text_rdd = spark.sparkContext.parallelize(tokens)\n",
+        "\n",
+        "counter = text_rdd.map(lambda word: (word,1)).reduceByKey(lambda a,b:a+b).sortBy(lambda x:-x[1]).collect()\n",
+        "counter"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "kU1fXf9MV1tT",
+        "outputId": "42d40c1f-4bd8-4e04-c456-ddd5f55fc763"
+      },
+      "execution_count": 96,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "[('and', 13),\n",
+              " ('of', 7),\n",
+              " ('the', 7),\n",
+              " ('as', 5),\n",
+              " ('fish', 5),\n",
+              " ('a', 5),\n",
+              " ('are', 4),\n",
+              " ('to', 4),\n",
+              " ('invertebrates', 3),\n",
+              " ('with', 3),\n",
+              " ('their', 3),\n",
+              " ('which', 3),\n",
+              " ('includes', 3),\n",
+              " ('equipped', 2),\n",
+              " ('The', 2),\n",
+              " ('years', 2),\n",
+              " ('ago', 2),\n",
+              " ('six', 2),\n",
+              " ('main', 2),\n",
+              " ('animal', 2),\n",
+              " ('from', 2),\n",
+              " ('most', 2),\n",
+              " ('first', 2),\n",
+              " ('vertebrates', 2),\n",
+              " ('species', 2),\n",
+              " ('that', 2),\n",
+              " ('Animals—complex', 1),\n",
+              " ('organisms', 1),\n",
+              " ('systems', 1),\n",
+              " ('pursue', 1),\n",
+              " ('capture', 1),\n",
+              " ('into', 1),\n",
+              " ('broad', 1),\n",
+              " ('groups', 1),\n",
+              " ('habitats', 1),\n",
+              " ('far', 1),\n",
+              " ('lack', 1),\n",
+              " ('internal', 1),\n",
+              " ('simple', 1),\n",
+              " ('anatomy', 1),\n",
+              " ('behavior', 1),\n",
+              " ('at', 1),\n",
+              " ('compared', 1),\n",
+              " ('Today', 1),\n",
+              " ('account', 1),\n",
+              " ('whopping', 1),\n",
+              " ('widely', 1),\n",
+              " ('group', 1),\n",
+              " ('insects', 1),\n",
+              " ('worms', 1),\n",
+              " ('other', 1),\n",
+              " ('families', 1),\n",
+              " ('true', 1),\n",
+              " ('ancestors', 1),\n",
+              " ('have', 1),\n",
+              " ('dominated', 1),\n",
+              " ('worlds', 1),\n",
+              " ('lakes', 1),\n",
+              " ('ever', 1),\n",
+              " ('three', 1),\n",
+              " ('bony', 1),\n",
+              " ('sharks', 1),\n",
+              " ('rays', 1),\n",
+              " ('skates', 1),\n",
+              " ('family', 1),\n",
+              " ('hagfish', 1),\n",
+              " ('lampreys', 1),\n",
+              " ('using', 1),\n",
+              " ('networks', 1),\n",
+              " ('receptors', 1),\n",
+              " ('head', 1),\n",
+              " ('water', 1),\n",
+              " ('currents', 1),\n",
+              " ('even', 1),\n",
+              " ('electricity', 1),\n",
+              " ('multicellular', 1),\n",
+              " ('nervous', 1),\n",
+              " ('ability', 1),\n",
+              " ('or', 1),\n",
+              " ('food—can', 1),\n",
+              " ('be', 1),\n",
+              " ('divided', 1),\n",
+              " ('categories', 1),\n",
+              " ('Here', 1),\n",
+              " ('ranging', 1),\n",
+              " ('simplest', 1),\n",
+              " ('spineless', 1),\n",
+              " ('complex', 1),\n",
+              " ('mammals', 1),\n",
+              " ('can', 1),\n",
+              " ('adapt', 1),\n",
+              " ('wide', 1),\n",
+              " ('range', 1),\n",
+              " ('animals', 1),\n",
+              " ('evolve', 1),\n",
+              " ('back', 1),\n",
+              " ('billion', 1),\n",
+              " ('characterized', 1),\n",
+              " ('by', 1),\n",
+              " ('backbones', 1),\n",
+              " ('skeletons', 1),\n",
+              " ('well', 1),\n",
+              " ('relatively', 1),\n",
+              " ('least', 1),\n",
+              " ('those', 1),\n",
+              " ('for', 1),\n",
+              " ('97', 1),\n",
+              " ('percent', 1),\n",
+              " ('all', 1),\n",
+              " ('varied', 1),\n",
+              " ('arthropods', 1),\n",
+              " ('sponges', 1),\n",
+              " ('mollusks', 1),\n",
+              " ('octopuses', 1),\n",
+              " ('countless', 1),\n",
+              " ('on', 1),\n",
+              " ('Earth', 1),\n",
+              " ('evolved', 1),\n",
+              " ('invertebrate', 1),\n",
+              " ('about', 1),\n",
+              " ('500', 1),\n",
+              " ('million', 1),\n",
+              " ('oceans', 1),\n",
+              " ('rivers', 1),\n",
+              " ('since', 1),\n",
+              " ('There', 1),\n",
+              " ('types', 1),\n",
+              " ('such', 1),\n",
+              " ('familiar', 1),\n",
+              " ('tuna', 1),\n",
+              " ('salmon', 1),\n",
+              " ('cartilaginous', 1),\n",
+              " ('jawless', 1),\n",
+              " ('small', 1),\n",
+              " ('made', 1),\n",
+              " ('up', 1),\n",
+              " ('entirely', 1),\n",
+              " ('Fish', 1),\n",
+              " ('breathe', 1),\n",
+              " ('gills', 1),\n",
+              " ('lateral', 1),\n",
+              " ('lines', 1),\n",
+              " ('interconnected', 1),\n",
+              " ('along', 1),\n",
+              " ('body', 1),\n",
+              " ('detect', 1)]"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 96
+        }
+      ]
+    }
+  ]
+}

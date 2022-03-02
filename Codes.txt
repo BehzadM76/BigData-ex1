@@ -1,0 +1,69 @@
+!pip install pyspark
+import pyspark 
+from pyspark.sql import SparkSession
+spark = SparkSession.builder.appName('test1').getOrCreate()
+sc=spark.sparkContext
+
+//install & call pyspark
+
+
+
+Names = ['Behzad','Behrooz','Arash','Helia','Negar',
+         'Keyvan','Hesam','Shahrooz','Koorosh','Leila',
+         'Nahid','Mahsa','Faranak','Arvin','Arsham',
+         'Edvin','Elham','Matin','Ava','Romina',
+         'Sadra','Armita','Anita','Hormoz','Armin',
+         'Sam','Azita','Elisa','Aria','Peyman',
+         'Ahmad','Kimia','Aslan','Zohre','Eli',
+         'Emad','Kasra','Kamran','Parviz','Parisa',
+         'Amir','Ashkan','Nima','Sajad','Saman',
+         'Narges','Shahrzad','shahin','Sattar','Maryam']
+
+//creating a list of 50 names
+
+
+
+rdd = sc.parallelize(Names)
+
+//create RDD from the list
+
+
+
+rdd.filter(lambda  Names:(Names)).collect()[19]
+
+//Find 20th element of the list
+
+
+
+x = rdd.map(lambda Names: Names.upper())
+
+//Convert List to capital & retrive  
+
+
+
+SortedNames = rdd.groupBy(lambda Names:Names[0]).map(lambda Names:[0],list(Names[1]))
+SortedNames.collect()
+
+//Sort & retrive the list
+
+
+
+
+from google.colab import drive
+drive.mount('/content/drive')
+
+import string
+
+file_content = open('/content/drive/My Drive/MyFile.txt', "r", encoding='utf-8-sig').read()
+
+new_text = file_content.translate(str.maketrans('','',string.punctuation))
+
+tokens = new_text.split()
+
+text_rdd = spark.sparkContext.parallelize(tokens)
+
+counter = text_rdd.map(lambda word: (word,1)).reduceByKey(lambda a,b:a+b).sortBy(lambda x:-x[1]).collect()
+counter
+
+//Apply map & Reduce on a long text after converting its tokens to RDD
+
